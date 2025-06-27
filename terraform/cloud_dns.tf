@@ -7,6 +7,14 @@ resource "google_compute_global_address" "copilot_static_ip" {
   description = "Reserved IP for HTTPS Load Balancer (Copilot)"
 }
 
+resource "google_compute_managed_ssl_certificate" "copilot_cert" {
+  name    = "copilot-cert"
+  project = var.project_id
+  managed {
+    domains = [var.domain]
+  }
+}
+
 resource "google_dns_managed_zone" "copilot_zone" {
   name        = "copilot-zone"
   dns_name    = var.domain_with_dot
