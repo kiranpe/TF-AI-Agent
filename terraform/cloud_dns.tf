@@ -1,4 +1,12 @@
 
+resource "google_compute_global_address" "copilot_static_ip" {
+  name = "copilot-static-ip"
+  project = var.project_id
+  ip_version = "IPV4"
+  address_type = "EXTERNAL"
+  description = "Reserved IP for HTTPS Load Balancer (Copilot)"
+}
+
 resource "google_dns_managed_zone" "copilot_zone" {
   name        = "copilot-zone"
   dns_name    = var.domain_with_dot
