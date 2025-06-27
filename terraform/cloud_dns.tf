@@ -26,5 +26,5 @@ resource "google_dns_record_set" "copilot_dns" {
   type         = "A"
   ttl          = 300
   managed_zone = google_dns_managed_zone.copilot_zone.name
-  rrdatas      = [google_compute_global_address.default.address]
+  rrdatas      = [google_compute_global_address.copilot_static_ip.address]
 }
