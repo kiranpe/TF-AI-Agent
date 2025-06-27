@@ -1,0 +1,5 @@
+
+apiVersion: v2
+name: copilot
+description: Helm chart for Copilot backend + frontend
+version: 0.1.0

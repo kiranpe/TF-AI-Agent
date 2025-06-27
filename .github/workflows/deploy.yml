@@ -11,8 +11,8 @@ env:
   PROJECT_ID: your-project
   CLUSTER_NAME: your-cluster
   CLUSTER_ZONE: us-central1-c
-  BACKEND_IMAGE: gcr.io/your-project/copilot-backend:latest
-  FRONTEND_IMAGE: gcr.io/your-project/copilot-frontend:latest
+  BACKEND_IMAGE: us-docker.pkg.dev/your-project/cicd-repo/copilot-backend:latest
+  FRONTEND_IMAGE: us-docker.pkg.dev/your-project/cicd-repo/copilot-frontend:latest
 
 jobs:
   deploy:

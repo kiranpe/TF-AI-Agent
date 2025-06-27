@@ -1,0 +1,16 @@
+
+replicaCount: 1
+
+image:
+  backend:
+    repository: us-docker.pkg.dev/your-project/cicd-repo/copilot-backend
+    tag: latest
+  frontend:
+    repository: us-docker.pkg.dev/your-project/cicd-repo/copilot-frontend
+    tag: latest
+
+service:
+  backend:
+    port: 8080
+  frontend:
+    port: 8501
