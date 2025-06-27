@@ -1,0 +1,39 @@
+
+import streamlit as st
+import requests
+import os
+
+BACKEND_URL = os.getenv("BACKEND_URL", "http://copilot-backend")
+
+st.title("Terraform Copilot Agent")
+
+module_name = st.text_input("Enter Terraform Module Name (e.g., vpc, gke, cloudsql)")
+
+if st.button("Show Module Wiki"):
+    if not module_name:
+        st.warning("Please enter a module name.")
+    else:
+        res = requests.get(f"{BACKEND_URL}/wiki", params={"module": module_name})
+        wiki = res.json().get("wiki", "Module not found.")
+        st.markdown(wiki)
+
+st.markdown("---")
+st.subheader("Enter Parameters for Module")
+
+param_input = st.text_area("Enter input values as JSON", value='{}')
+
+if st.button("Generate Terraform & Create PR"):
+    if not module_name or not param_input:
+        st.warning("Please provide both module name and parameter values.")
+    else:
+        try:
+            params = eval(param_input)
+            res = requests.post(f"{BACKEND_URL}/generate", json={
+                "module_name": module_name,
+                "parameters": params
+            })
+            pr_url = res.json().get("pr_url")
+            st.success("Pull Request Created!")
+            st.write(f"[View PR]({pr_url})")
+        except Exception as e:
+            st.error(f"Error in input: {e}")

@@ -1,0 +1,15 @@
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: copilot-frontend
+  annotations:
+    cloud.google.com/load-balancer-type: "Internal"
+spec:
+  type: LoadBalancer
+  selector:
+    app: copilot-frontend
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8501

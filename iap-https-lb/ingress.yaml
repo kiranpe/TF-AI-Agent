@@ -1,0 +1,27 @@
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: copilot-ingress
+  annotations:
+    kubernetes.io/ingress.global-static-ip-name: "copilot-static-ip"
+    networking.gke.io/managed-certificates: "copilot-cert"
+    networking.gke.io/v1beta1.FrontendConfig: "copilot-frontendconfig"
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /ai-tf
+        pathType: Prefix
+        backend:
+          service:
+            name: copilot-frontend
+            port:
+              number: 80
+      - path: /ai-tf/api
+        pathType: Prefix
+        backend:
+          service:
+            name: copilot-backend
+            port:
+              number: 80
