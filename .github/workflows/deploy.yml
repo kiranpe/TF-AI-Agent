@@ -13,8 +13,8 @@ env:
   CLUSTER_ZONE: us-east1-c
   REGION: us
   REPO_NAME: cicd-repo
-  BACKEND_IMAGE: us-docker.pkg.dev/your-project/cicd-repo/copilot-backend:latest
-  FRONTEND_IMAGE: us-docker.pkg.dev/your-project/cicd-repo/copilot-frontend:latest
+  BACKEND_IMAGE: us-east1-docker.pkg.dev/mlops-448320/us-east1/cicd-repo/copilot-backend:latest
+  FRONTEND_IMAGE: us-east1-docker.pkg.dev/mlops-448320/us-east1/cicd-repo/copilot-frontend:latest
 
 jobs:
   deploy:
