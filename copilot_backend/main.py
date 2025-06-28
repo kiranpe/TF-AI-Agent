@@ -1,13 +1,14 @@
 
+import os
 from fastapi import FastAPI, Query, Request
 import requests
 
 app = FastAPI()
 
-ADO_ORG = "your-org"
-ADO_PROJECT = "your-project"
-ADO_WIKI = "your-wiki"
-ADO_PAT = "your-pat"
+ADO_ORG = "kiranmlops2025"
+ADO_PROJECT = "GCP_CE_Project"
+ADO_WIKI = "GCP_CE_Project.wiki"
+ADO_PAT = os.environ.get("ADO_PAT")
 
 def fetch_wiki_page(module_name):
     path = f"/{module_name}"
