@@ -10,7 +10,7 @@ on:
 env:
   PROJECT_ID: your-project
   CLUSTER_NAME: your-cluster
-  CLUSTER_ZONE: us-central1-c
+  CLUSTER_ZONE: us-east1-c
   REGION: us
   REPO_NAME: cicd-repo
   BACKEND_IMAGE: us-docker.pkg.dev/your-project/cicd-repo/copilot-backend:latest
@@ -42,16 +42,28 @@ jobs:
       run: |
         docker build -f Dockerfile.frontend -t $FRONTEND_IMAGE .
         docker push $FRONTEND_IMAGE
+    
+    - name: Initialize Terraform
+      working-directory: terraform
+      run: terraform init
 
-    - name: Get GKE Credentials
-      run: gcloud container clusters get-credentials $CLUSTER_NAME --zone $CLUSTER_ZONE --project $PROJECT_ID
+    # - name: Terraform Format Check
+    #   working-directory: terraform
+    #   run: terraform fmt -check
 
-    - name: Deploy via Helm
-      run: |
-        helm upgrade --install copilot charts/copilot \
-          --set image.backend.repository=us-docker.pkg.dev/$PROJECT_ID/$REPO_NAME/copilot-backend \
-          --set image.frontend.repository=us-docker.pkg.dev/$PROJECT_ID/$REPO_NAME/copilot-frontend
+    - name: Terraform Plan
+      working-directory: terraform
+      run: terraform plan
 
-    - name: Apply IAP and Ingress Configs
-      run: |
-        kubectl apply -f iap-https-lb/
+    # - name: Get GKE Credentials
+    #   run: gcloud container clusters get-credentials $CLUSTER_NAME --zone $CLUSTER_ZONE --project $PROJECT_ID
+
+    # - name: Deploy via Helm
+    #   run: |
+    #     helm upgrade --install copilot charts/copilot \
+    #       --set image.backend.repository=us-docker.pkg.dev/$PROJECT_ID/$REPO_NAME/copilot-backend \
+    #       --set image.frontend.repository=us-docker.pkg.dev/$PROJECT_ID/$REPO_NAME/copilot-frontend
+
+    # - name: Apply IAP and Ingress Configs
+    #   run: |
+    #     kubectl apply -f iap-https-lb/
