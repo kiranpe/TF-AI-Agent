@@ -35,7 +35,7 @@ jobs:
 
     - name: Build and Push Backend
       run: |
-        docker build -f Dockerfile -t $BACKEND_IMAGE .
+        docker build -f Dockerfile.backend -t $BACKEND_IMAGE .
         docker push $BACKEND_IMAGE
 
     - name: Build and Push Frontend
