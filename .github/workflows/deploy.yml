@@ -36,12 +36,12 @@ jobs:
     - name: Build and Push Backend
       run: |
         docker build -f Dockerfile.backend -t $BACKEND_IMAGE .
-        docker push $BACKEND_IMAGE
+        #docker push $BACKEND_IMAGE
 
     - name: Build and Push Frontend
       run: |
         docker build -f Dockerfile.frontend -t $FRONTEND_IMAGE .
-        docker push $FRONTEND_IMAGE
+        #docker push $FRONTEND_IMAGE
     
     - name: Initialize Terraform
       working-directory: terraform
