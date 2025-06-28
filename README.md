@@ -37,20 +37,6 @@ docker push gcr.io/your-project/copilot-frontend:latest
 
 ## ☸️ Kubernetes Deployment (GKE)
 
-### Step 1: Deploy Backend
-```bash
-kubectl apply -f k8s/copilot-deployment.yaml
-kubectl apply -f k8s/copilot-backend-service.yaml
-```
-
-### Step 2: Deploy Frontend
-```bash
-kubectl apply -f k8s/copilot-frontend.yaml
-kubectl apply -f k8s/copilot-frontend-service.yaml
-```
-
----
-
 ## 🔐 HTTPS Load Balancer + IAP Setup with Google-managed Cert
 
 ### Step 1: Reserve Static IP
@@ -76,11 +62,7 @@ kubectl create secret generic iap-oauth-secret \
 
 ### Step 5: Apply IAP and HTTPS Resources
 ```bash
-kubectl apply -f iap-https-lb/frontend-neg.yaml
-kubectl apply -f iap-https-lb/frontend-service-neg.yaml
-kubectl apply -f iap-https-lb/frontendconfig.yaml
-kubectl apply -f iap-https-lb/managed-cert.yaml
-kubectl apply -f iap-https-lb/ingress.yaml
+kubectl apply -f iap-https-lb/
 ```
 
 ---
@@ -124,18 +106,8 @@ Access is protected by Google IAP — only authorized users will be able to log 
 ```
 /copilot_backend/         # FastAPI backend
 /copilot_frontend/        # Streamlit frontend
-/k8s/                     # Manual Kubernetes deployments
 /iap-https-lb/            # IAP + HTTPS LB configs using Google-managed certs
 /terraform/               # Infra provisioning (IP, IAP, secret)
-/Dockerfile               # Backend
+/Dockerfile.backend       # Backend
 /Dockerfile.frontend      # Frontend
 ```
-
----
-
-## 💬 Need Help?
-
-Let me know if you want:
-- GitHub Actions CI/CD
-- Backend secured via IAP as well
-- GCP Cloud DNS for domain
