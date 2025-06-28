@@ -41,6 +41,7 @@ jobs:
     - name: Build and Push Frontend
       run: |
         docker build -f Dockerfile.frontend -t $FRONTEND_IMAGE .
+        docker images
         #docker push $FRONTEND_IMAGE
 
     - name: Set up Terraform
