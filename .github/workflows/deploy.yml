@@ -31,7 +31,7 @@ jobs:
       run: gcloud compute instances list
 
     - name: Configure Docker
-      run: gcloud auth configure-docker us-docker.pkg.dev
+      run: gcloud auth configure-docker us-east1-docker.pkg.dev
 
     - name: Build and Push Backend
       run: |
