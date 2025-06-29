@@ -9,31 +9,34 @@ st.title("Terraform Copilot Agent")
 
 module_name = st.text_input("Enter Terraform Module Name (e.g., vpc, gke, cloudsql)")
 
-if st.button("Show Module Wiki"):
-    if not module_name:
-        st.warning("Please enter a module name.")
+# Step 1: Fetch wiki
+if module_name:
+    st.subheader("📘 Wiki Snippet: Inputs & Example")
+    res = requests.get(f"{BACKEND_URL}/wiki", params={"module": module_name})
+    if res.status_code == 200:
+        st.markdown(res.json().get("wiki", ""))
     else:
-        res = requests.get(f"{BACKEND_URL}/wiki", params={"module": module_name})
-        wiki = res.json().get("wiki", "Module not found.")
-        st.markdown(wiki)
+        st.error("❌ Failed to fetch wiki")
 
-st.markdown("---")
-st.subheader("Enter Parameters for Module")
+# Step 2: Accept raw input for TF parameters
+    st.subheader("✏️ Terraform Input Values")
 
-param_input = st.text_area("Enter input values as JSON", value='{}')
+    tf_input = st.text_area("Paste module block (or edit example):", height=250, placeholder="module \"gcs\" { ... }")
 
-if st.button("Generate Terraform & Create PR"):
-    if not module_name or not param_input:
-        st.warning("Please provide both module name and parameter values.")
-    else:
-        try:
-            params = eval(param_input)
-            res = requests.post(f"{BACKEND_URL}/generate", json={
-                "module_name": module_name,
-                "parameters": params
-            })
-            pr_url = res.json().get("pr_url")
-            st.success("Pull Request Created!")
-            st.write(f"[View PR]({pr_url})")
-        except Exception as e:
-            st.error(f"Error in input: {e}")
+    if st.button("🚀 Generate Terraform & Create PR"):
+        payload = {
+            "module": module_name,
+            "inputs": {
+                "raw": tf_input
+            }
+        }
+        response = requests.post(f"{BACKEND_URL}/generate", json=payload)
+
+        if response.status_code == 200:
+            data = response.json()
+            if "terraform" in data:
+                st.code(data["terraform"], language="hcl")
+            if "pr_url" in data:
+                st.success(f"✅ PR Created: [View PR]({data['pr_url']})")
+        else:
+            st.error("❌ Failed to generate")
