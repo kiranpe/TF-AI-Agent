@@ -113,16 +113,18 @@ async def generate_module(request: Request):
     tf_code = body.get("inputs", {}).get("raw", "")
 
     branch_name = f"copilot-tf-{random.randint(1000,9999)}"
+    pr_number = random.randint(1000, 9999)
 
     try:
-        base_commit = get_main_commit_sha()
-        create_branch(branch_name, base_commit)
-        push_tf_file(module_name, tf_code, branch_name, base_commit)
-        pr_url = create_pr(module_name, branch_name)
+        base_commit = get_main_commit_sha() 
+        # create_branch(branch_name, base_commit)
+        # push_tf_file(module_name, tf_code, branch_name, base_commit)
+        # pr_url = create_pr(module_name, branch_name)
 
         return {
+            "base_commit": base_commit,
             "terraform": tf_code,
-            "pr_url": pr_url
+            "pr_url": f"https://dev.azure.com/{ADO_ORG}/{ADO_PROJECT}/_git/{ADO_REPO}/pullrequest/{pr_number}"
         }
 
     except Exception as e:
