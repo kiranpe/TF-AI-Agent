@@ -43,10 +43,11 @@ if module_name:
                 if response.status_code == 200:
                     data = response.json()
                     if "terraform" in data:
+                        st.subheader("📦 Generated Terraform")
                         st.code(data["terraform"], language="hcl")
                     if "pr_url" in data:
-                        st.success(f"✅ PR Created: [View PR]({data['pr_url']})")
+                        st.success(f"✅ Pull Request Created: [View PR]({data['pr_url']})")
                 else:
-                    st.error("❌ Failed to generate")
+                    st.error("❌ Failed to generate Terraform")
     else:
         st.error(f"❌ Wiki fetch failed: {res.status_code}")

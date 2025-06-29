@@ -1,14 +1,16 @@
 
 import os
-from fastapi import FastAPI, Query, Request
 import requests
 import re
+import random
+from fastapi import FastAPI, Query, Request
 
 app = FastAPI()
 
 ADO_ORG = "kiranmlops2025"
 ADO_PROJECT = "GCP_CE_Project"
 ADO_WIKI = "GCP_CE_Project.wiki"
+ADO_REPO = "terraform-modules"
 ADO_PAT = os.environ.get("ADO_PAT")
 
 def clean_anchor_tags(md: str) -> str:
@@ -47,5 +49,13 @@ def get_module_doc(module: str = Query(...)):
 @app.post("/generate")
 async def generate_module(request: Request):
     body = await request.json()
-    # Dummy response for PR generation
-    return {"pr_url": f"https://dev.azure.com/{ADO_ORG}/{ADO_PROJECT}/_git/infra/pullrequest/123"}
+    module_name = body.get("module", "unknown")
+    tf_code = body.get("inputs", {}).get("raw", "")
+
+    # Simulate a PR number
+    pr_number = random.randint(1000, 9999)
+
+    return {
+        "terraform": tf_code,
+        "pr_url": f"https://dev.azure.com/{ADO_ORG}/{ADO_PROJECT}/_git/{ADO_REPO}/pullrequest/{pr_number}"
+    }
