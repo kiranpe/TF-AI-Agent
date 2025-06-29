@@ -72,6 +72,10 @@ def push_tf_file(module_name, tf_code, branch_name, base_commit):
             }]
         }]
     }
+
+    print("🔍 Push URL:", url)
+    print("📦 Push payload:")
+    print(json.dumps(payload, indent=2))
     resp = requests.post(url, json=payload, headers=HEADERS)
 
     if resp.status_code in (200, 201):
