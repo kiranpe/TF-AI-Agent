@@ -29,11 +29,11 @@ def fetch_wiki_page(module_name):
     else:
         return f"<p><strong>Error:</strong> Wiki page not found for module <code>{module_name}</code></p>"
 
-@app.get("/wiki")
+@app.get("/api/wiki")
 def get_module_doc(module: str = Query(...)):
     return {"wiki": fetch_wiki_page(module)}
 
-@app.post("/generate")
+@app.post("/api/generate")
 async def generate_module(request: Request):
     body = await request.json()
     # Dummy response for PR generation
