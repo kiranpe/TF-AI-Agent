@@ -39,7 +39,7 @@ def create_branch(branch_name, commit_sha):
 
 def push_tf_file(module_name, tf_code, branch_name, base_commit):
     url = f"{ADO_API}/pushes?api-version=7.1-preview.1"
-    file_path = f"modules/{module_name}/main.tf"
+    file_path = f"dev/{module_name}.tf"
 
     payload = {
         "refUpdates": [{
