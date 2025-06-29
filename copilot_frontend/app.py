@@ -2,22 +2,12 @@
 import streamlit as st
 import requests
 import os
-import streamlit.components.v1 as components
 
 BACKEND_URL = os.getenv("BACKEND_URL", "http://copilot-backend")
 
 st.title("Terraform Copilot Agent")
 
 module_name = st.text_input("Enter Terraform Module Name (e.g., vpc, gke, cloudsql)")
-
-if module_name:
-    response = requests.get(f"{BACKEND_URL}/wiki", params={"module": module_name})
-
-    if response.status_code == 200:
-        html_content = response.json().get("wiki", "<p>No content found.</p>")
-        components.html(html_content, height=600, scrolling=True)
-    else:
-        st.error(f"Failed to fetch wiki. Status: {response.status_code}")
 
 if st.button("Show Module Wiki"):
     if not module_name:

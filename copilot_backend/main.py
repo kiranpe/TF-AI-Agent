@@ -25,7 +25,42 @@ def fetch_wiki_page(module_name):
             markdown_content,
             extensions=["fenced_code", "tables", "codehilite"]
         )
-        return html
+        styled = f"""
+        <html>
+        <head>
+        <style>
+        body {{
+        font-family: Arial, sans-serif;
+        color: #333;
+        line-height: 1.6;
+        }}
+        code {{
+        background-color: #f6f8fa;
+        padding: 2px 4px;
+        border-radius: 4px;
+        font-size: 90%;
+        }}
+        pre {{
+        background-color: #f6f8fa;
+        padding: 10px;
+        border-radius: 6px;
+        overflow-x: auto;
+        }}
+        table {{
+        border-collapse: collapse;
+        width: 100%;
+        }}
+        th, td {{
+        text-align: left;
+        padding: 8px;
+        border: 1px solid #ddd;
+        }}
+        </style>
+        </head>
+        <body>{html}</body>
+        </html>
+        """
+        return styled
     else:
         return f"<p><strong>Error:</strong> Wiki page not found for module <code>{module_name}</code></p>"
 
