@@ -21,7 +21,7 @@ def fetch_wiki_page(module_name):
     if res.status_code == 200:
         return res.json().get("content", "No content found")
     else:
-        return f"<p><strong>Error:</strong> Wiki page not found for module <code>{module_name}</code></p>"
+        return f"Error: Wiki page not found for module {module_name}"
 
 @app.get("/wiki")
 def get_module_doc(module: str = Query(...)):
