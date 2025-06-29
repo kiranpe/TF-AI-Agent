@@ -47,6 +47,8 @@ if module_name:
                         st.code(data["terraform"], language="hcl")
                     if "pr_url" in data:
                         st.success(f"✅ Pull Request Created: [View PR]({data['pr_url']})")
+                    if "base_commit" in data:
+                        st.success(f"✅ Commit ID: {data['base_commit']}")
                 else:
                     st.error("❌ Failed to generate Terraform")
     else:
