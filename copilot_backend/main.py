@@ -21,7 +21,10 @@ def fetch_wiki_page(module_name):
 
     if res.status_code == 200:
         markdown_content = res.json().get("content", "")
-        html = markdown.markdown(markdown_content)
+        html = markdown.markdown(
+            markdown_content,
+            extensions=["fenced_code", "tables", "codehilite"]
+        )
         return html
     else:
         return f"<p><strong>Error:</strong> Wiki page not found for module <code>{module_name}</code></p>"
