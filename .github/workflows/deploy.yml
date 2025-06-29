@@ -12,7 +12,6 @@ env:
   CLUSTER_NAME: your-cluster
   CLUSTER_ZONE: us-east1-c
   REGION: us
-  REPO_NAME: cicd-repo
   BACKEND_IMAGE: us-east1-docker.pkg.dev/mlops-448320/tf-ai-agent/copilot-backend:latest
   FRONTEND_IMAGE: us-east1-docker.pkg.dev/mlops-448320/tf-ai-agent/copilot-frontend:latest
 
@@ -28,7 +27,6 @@ jobs:
       with:
         credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
         token_format: "access_token"
-        decode_json: true
 
     - name: Configure Docker
       run: gcloud auth configure-docker us-docker.pkg.dev
