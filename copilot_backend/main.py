@@ -11,10 +11,10 @@ ADO_WIKI = "GCP_CE_Project.wiki"
 ADO_PAT = os.environ.get("ADO_PAT")
 
 
-def extract_sections(md, sections=["## Inputs",]):
+def extract_sections(md, sections=["## Inputs", "## Example"]):
     output = []
     for section in sections:
-        pattern = re.escape(section) + r"(.*?)(?=\n## |\Z)"  # up to next ## or end "## Example"
+        pattern = re.escape(section) + r"(.*?)(?=\n## |\Z)"  # up to next ## or end 
         match = re.search(pattern, md, flags=re.DOTALL | re.IGNORECASE)
         if match:
             output.append(section + match.group(1).rstrip())
@@ -29,7 +29,9 @@ def fetch_wiki_page(module_name):
     res = requests.get(url, auth=("", ADO_PAT))
 
     if res.status_code == 200:
-        return res.json().get("content", "No content found")
+        markdown_content = res.json().get("content", "")
+        filtered_md = extract_sections(markdown_content)
+        return filtered_md or "Requested sections not found in the wiki page."
     else:
         return f"Error: Wiki page not found for module {module_name}"
 
