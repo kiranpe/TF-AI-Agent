@@ -4,6 +4,7 @@ import requests
 import re
 import random
 import base64
+import json
 from fastapi import FastAPI, Query, Request, APIRouter
 
 app = FastAPI()
@@ -34,8 +35,21 @@ def create_branch(branch_name, commit_sha):
             "newObjectId": commit_sha
         }
     ]
-    r = requests.post(url, json=payload, headers=HEADERS)
-    r.raise_for_status()
+    resp = requests.post(url, json=payload, headers=HEADERS)
+    if resp.status_code in (200, 201):
+        print(f"✅ Branch '{branch_name}' ready (status {resp.status_code})")
+        return True
+
+    # Anything else → log details
+    try:
+        details = resp.json()
+        msg = json.dumps(details, indent=2)
+    except ValueError:
+        msg = resp.text
+
+    print(f"❌ Failed to create branch '{branch_name}' "
+          f"(status {resp.status_code})\nResponse:\n{msg}")
+    return False
 
 def push_tf_file(module_name, tf_code, branch_name, base_commit):
     url = f"{ADO_API}/pushes?api-version=7.1-preview.1"
@@ -117,7 +131,8 @@ async def generate_module(request: Request):
 
     try:
         base_commit = get_main_commit_sha() 
-        # create_branch(branch_name, base_commit)
+        if not create_branch(branch_name, base_commit):
+            return {"error": "branch_creation_failed"}
         # push_tf_file(module_name, tf_code, branch_name, base_commit)
         # pr_url = create_pr(module_name, branch_name)
 
