@@ -11,7 +11,6 @@ module_name = st.text_input("Enter Terraform Module Name (e.g., vpc, gke, clouds
 
 # Step 1: Fetch wiki
 if module_name:
-    st.subheader("📘 Wiki Snippet: Inputs & Example")
     res = requests.get(f"{BACKEND_URL}/wiki", params={"module": module_name})
     if res.status_code == 200:
         wiki_content = res.json().get("wiki", "").strip()
