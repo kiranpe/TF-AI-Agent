@@ -2,6 +2,7 @@
 import os
 from fastapi import FastAPI, Query, Request
 import requests
+import markdown
 
 app = FastAPI()
 
@@ -17,9 +18,13 @@ def fetch_wiki_page(module_name):
         f"?path={path}&includeContent=true&api-version=7.1-preview.1"
     )
     res = requests.get(url, auth=("", ADO_PAT))
+
     if res.status_code == 200:
-        return res.json().get("content", "No content found")
-    return f"Wiki page not found for module `{module_name}`"
+        markdown_content = res.json().get("content", "")
+        html = markdown.markdown(markdown_content)
+        return html
+    else:
+        return f"<p><strong>Error:</strong> Wiki page not found for module <code>{module_name}</code></p>"
 
 @app.get("/wiki")
 def get_module_doc(module: str = Query(...)):
