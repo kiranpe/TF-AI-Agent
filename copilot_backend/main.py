@@ -20,9 +20,7 @@ def fetch_wiki_page(module_name):
     res = requests.get(url, auth=("", ADO_PAT))
 
     if res.status_code == 200:
-        markdown_content = res.json().get("content", "")
-        html = markdown.markdown(markdown_content)
-        return html
+        return res.json().get("content", "No content found")
     else:
         return f"<p><strong>Error:</strong> Wiki page not found for module <code>{module_name}</code></p>"
 
