@@ -10,6 +10,16 @@ ADO_PROJECT = "GCP_CE_Project"
 ADO_WIKI = "GCP_CE_Project.wiki"
 ADO_PAT = os.environ.get("ADO_PAT")
 
+
+def extract_sections(md, sections=["## Inputs",]):
+    output = []
+    for section in sections:
+        pattern = re.escape(section) + r"(.*?)(?=\n## |\Z)"  # up to next ## or end "## Example"
+        match = re.search(pattern, md, flags=re.DOTALL | re.IGNORECASE)
+        if match:
+            output.append(section + match.group(1).rstrip())
+    return "\n\n".join(output)
+
 def fetch_wiki_page(module_name):
     path = f"/{module_name}"
     url = (
