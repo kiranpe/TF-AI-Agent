@@ -2,5 +2,4 @@ fastapi
 uvicorn
 requests
 streamlit
-markdown
 google-cloud-secret-manager
