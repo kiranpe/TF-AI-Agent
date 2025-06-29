@@ -11,6 +11,9 @@ ADO_PROJECT = "GCP_CE_Project"
 ADO_WIKI = "GCP_CE_Project.wiki"
 ADO_PAT = os.environ.get("ADO_PAT")
 
+def clean_anchor_tags(md: str) -> str:
+    """Remove <a name="..."></a> tags inserted by ADO markdown engine."""
+    return re.sub(r'<a name="[^"]*"></a>', '', md)
 
 def extract_sections(md, sections=["## Inputs", "## Example"]):
     output = []
@@ -31,7 +34,8 @@ def fetch_wiki_page(module_name):
 
     if res.status_code == 200:
         markdown_content = res.json().get("content", "")
-        filtered_md = extract_sections(markdown_content)
+        cleaned_md = clean_anchor_tags(markdown_content) 
+        filtered_md = extract_sections(cleaned_md)
         return filtered_md or "Requested sections not found in the wiki page."
     else:
         return f"Error: Wiki page not found for module {module_name}"
