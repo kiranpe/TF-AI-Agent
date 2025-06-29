@@ -4,14 +4,14 @@ import requests
 import os
 import streamlit.components.v1 as components
 
-BACKEND_URL = os.getenv("BACKEND_URL", "http://copilot-backend/api")
+BACKEND_URL = os.getenv("BACKEND_URL", "http://copilot-backend")
 
 st.title("Terraform Copilot Agent")
 
 module_name = st.text_input("Enter Terraform Module Name (e.g., vpc, gke, cloudsql)")
 
 if module_name:
-    response = requests.get(f"{BACKEND_URL}/api/wiki", params={"module": module_name})
+    response = requests.get(f"{BACKEND_URL}/wiki", params={"module": module_name})
 
     if response.status_code == 200:
         html_content = response.json().get("wiki", "<p>No content found.</p>")
@@ -23,7 +23,7 @@ if st.button("Show Module Wiki"):
     if not module_name:
         st.warning("Please enter a module name.")
     else:
-        res = requests.get(f"{BACKEND_URL}/api/wiki", params={"module": module_name})
+        res = requests.get(f"{BACKEND_URL}/wiki", params={"module": module_name})
         wiki = res.json().get("wiki", "Module not found.")
         st.markdown(wiki)
 
@@ -38,7 +38,7 @@ if st.button("Generate Terraform & Create PR"):
     else:
         try:
             params = eval(param_input)
-            res = requests.post(f"{BACKEND_URL}/api/generate", json={
+            res = requests.post(f"{BACKEND_URL}/generate", json={
                 "module_name": module_name,
                 "parameters": params
             })
